@@ -11,18 +11,24 @@ function Header(){
 
                   <ul>
                      <li>
-                      <Link to="/homes">All Homes</Link>
+                      {/* <Link to={{pathname:"/homes", state:{propertyType: 'sell'}}}>All Homes</Link> */}
+                      <Link to="/homes"   state={{ propertyType: '' } } className=' text-orange-700'>All Homes</Link>
+
                     </li>
                     <li>
-                      <Link to="/buy-home" >Buy</Link>
-                    </li>
-        
-                    <li>
-                      <Link to="/sell-home"> Sell </Link>
+                      <Link to="/buy-home" state={{ propertyType: 'sell' } } >Buy</Link>
                     </li>
                     <li>
-                      <Link to="/rent-home"> Rent </Link>
+                      <Link to="/sell-home"   state={{ propertyType: 'sell' } }>Sell</Link>
+
+                      </li>
+
+                    <li>
+                      <Link to="/rent-home"   state={{ propertyType: 'rent' } }> Rent </Link>
+
                     </li>
+
+
                     <li>
                       <Link to="/manage-rental"> Manage Rental </Link>
                     </li>
