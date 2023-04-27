@@ -1,0 +1,64 @@
+.container { 
+    max-width: 960px; 
+    margin: 0 auto; 
+    padding: 0 15px; 
+  } 
+   
+  .property-cards { 
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2); 
+    padding: 20px; 
+    border-radius: 5px; 
+    background-color: #fff; 
+  } 
+   
+  .card__image { 
+    display: block; 
+    margin: 0 auto; 
+    width: 100%; 
+    max-width: 500px; 
+    height: auto; 
+    border-radius: 5px; 
+  } 
+   
+  .card__price { 
+    font-size: 24px; 
+    font-weight: bold; 
+    margin-top: 0; 
+  } 
+   
+  .card__type { 
+    font-size: 18px; 
+    font-weight: bold; 
+    margin: 10px 0; 
+  } 
+   
+  .card__details { 
+    font-size: 16px; 
+    margin: 10px 0; 
+  } 
+   
+  .card__button { 
+    background-color: #007bff; 
+    color: #fff; 
+    border: none; 
+    padding: 8px 16px; 
+    border-radius: 5px; 
+    cursor: pointer; 
+    margin-top: 10px; 
+  } 
+   
+  .card__button:hover { 
+    background-color: #0069d9; 
+  } 
+   
+  .card__back { 
+    display: block; 
+    margin-top: 10px; 
+    color: #007bff; 
+    text-decoration: none; 
+    font-weight: bold; 
+  } 
+   
+  .card__back:hover { 
+    text-decoration: underline; 
+  }

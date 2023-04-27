@@ -5,37 +5,100 @@ import img3 from '../images/img3.jpg'
 import PropertyDetails from './PropertyDetails'
 import { Link } from 'react-router-dom';
 import { useLocation } from 'react-router-dom';
+import { useState, useEffect, useRef } from 'react';
+import axios from 'axios';
+import { propertyContext } from '../context/PropertyContext';
+import { useContext } from 'react';
+import './properties.css';
 
 
-export let propertiesArray = [
-  {id:1, status: "PENDING", views: 35, location: "Fairfield", propertyType: "sell", roomNo: 4, homeType: "Family", price: 200000, image: img1},
-  {id:2,status: "AVAILABLE", views: 55, location: "DesMoin", propertyType: "rent", roomNo: 7, homeType: "home-town", price: 50000, image:img2},
-  {id:3,status: "CONTINGENT", views: 65, location: "Chicago", propertyType: "sell", roomNo: 2, homeType: "Manufactured", price: 300000, image: img3},
-]
+// export let propertiesArray = [
+//   {id:1, status: "PENDING", views: 35, location: "Fairfield", propertyType: "sell", roomNo: 4, homeType: "Family", price: 200000, image: img1},
+//   {id:2,status: "AVAILABLE", views: 55, location: "DesMoin", propertyType: "rent", roomNo: 7, homeType: "home-town", price: 50000, image:img2},
+//   {id:3,status: "CONTINGENT", views: 65, location: "Chicago", propertyType: "sell", roomNo: 2, homeType: "Manufactured", price: 300000, image: img3},
+// ]
 
 function Properties(){
 
-  const location = useLocation();
-  const propertyType = location.state.propertyType;
+  const contextData = useContext(propertyContext);
+ 
+
+  const propertyTypeRef = useRef();
+  const locationRef = useRef();
+  const minPriceRef = useRef();
+  const maxPriceRef = useRef();
+  const roomNoRef = useRef();
+
+  // console.log(locationRef.current.value);
+
+
+  const formRef = useRef();
+  const [flag, setFlag] = useState(false);
+
+  const [propertiesState, setpropertiesState] = useState([]);
+
+
+    const filterHandler = () => {
+      // console.log("location" + locationRef.current.value);
+      // console.log("roomNO"+roomNoRef.current.value);
+      // console.log("type"+propertyTypeRef.current.value);
+      // propertyType = propertyTypeRef.current.value;
+        setFlag(!flag)
+    }
+
+
+    const fetchproperties = () => {
+
+
+      const p =  {
+        propertyType: propertyTypeRef.current.value,
+        location: locationRef.current.value,
+        roomNo: roomNoRef.current.value,
+        minPrice : minPriceRef.current.value,
+        maxPrice : maxPriceRef.current.value 
+      }
+      console.log("the parameter");
+      console.log(p);
+
+        axios.get('http://localhost:8080/properties',
+        {
+            params: {
+              propertyType: propertyTypeRef.current.value,
+              location: locationRef.current.value,
+              roomNo: roomNoRef.current.value,
+              minPrice : minPriceRef.current.value,
+              maxPrice : maxPriceRef.current.value 
+            }
+        }
+        )
+            .then(response => {
+                setpropertiesState(response.data);
+            })
+            .catch(error => {
+                console.log(error.message)
+            })
+    }
+
+    useEffect(() => {
+        fetchproperties();
+    },
+        [flag])
 
 
   const getProperties = ()=>{
 
-    if(propertyType==="sell")
-      propertiesArray = propertiesArray.filter(p=>p.propertyType==="sell");
-    else if(propertyType==="rent") 
-    propertiesArray = propertiesArray.filter(p=>p.propertyType==="rent");
+    // if(propertyType==="sell")
+    //   propertiesArray = propertiesArray.filter(p=>p.propertyType==="sell");
+    // else if(propertyType==="rent") 
+    // propertiesArray = propertiesArray.filter(p=>p.propertyType==="rent");
 
 
-    const properties = propertiesArray.map(p => {
+    const properties = propertiesState.map(p => {
       return (
-        <Link to={`${p.id}`} key={p.isbn} >
+        <Link to={"/homes/" + p.id} key={p.isbn} >
 
       <Property
-                  image= {p.image}
-                  price={p.price}
-                  roomNo={p.roomNo}
-                  location = {p.location}
+                  property = {p}
               /></Link>
               )
 
@@ -43,58 +106,93 @@ function Properties(){
  
   return properties;
   }
-  console.log(propertiesArray);
  
+  return (<div class="product-container"> 
+  <br /> 
+  <div class="user-info"> 
+    {/* {contextData.isLoggedIn ?  
+    location.state.email : ""  
+  }  */}
+  </div> 
+  <div class="filters"> 
+    <label class='filter-label'>Filter: </label> 
+    <select class='filter-select' ref={propertyTypeRef}> 
+      <option value="">Sale/Rent</option> 
+      <option value="sell">For Sell</option> 
+      <option value="rent">For Rent</option> 
+      <option value="sold">Sold </option> 
+    </select> 
+ 
+    <label class='price-label'>Min Price: </label> 
+    <input ref={minPriceRef} class='price-input' type="text" width={10} name="minPrice"></input> 
+    <label class='price-label'>Max Price: </label> 
+    <input ref={maxPriceRef} class='price-input' type="text" name = "maxPrice"></input> 
+ 
+    <label class='beds-label'>Beds: </label> 
+    <select class='beds-select' ref={roomNoRef} name="roomNo"> 
+      <option value="">Beds</option> 
+      <option value="1">1+</option> 
+      <option value="2">2+</option> 
+      <option value="3">3+ </option> 
+    </select> 
+ 
+    <label class='location-label'>Location: </label> 
+    <input ref={locationRef} class='location-input' type="text" name="location"></input> 
+ 
+    <button class='apply-button' onClick={filterHandler}> Apply Filter</button> 
+  </div> 
+<br/> 
+  <div class="property-list"> 
+    {getProperties()} 
+  </div> 
+</div>)
 
-    return <div className="Product">
-    <br />
+//     return <div className="Product">
+//     <br />
 
 
-    <div className="Product">
-      <p>properties page</p>
-            <label>Filter: </label>
-            <select>
-            {/* <select id="minPrice" name="minPrice"><select> */}
-                <option value="forSale">For Sell</option>
-                <option value="forRent">For Rent</option>
-                <option value="forRent">Sold </option>
+//     <div className="Product">
+//       {/* {contextData.isLoggedIn? 
+//       location.state.email: "" 
+//     } */}
+//             <label>Filter: </label>
+//             <select ref={propertyTypeRef}>
+//             <option value="">Sale/Rent</option>
+//                 <option value="sell">For Sell</option>
+//                 <option value="rent">For Rent</option>
+//                 <option value="sold">Sold </option>
 
-            </select>
+//             </select>
 
 
-
-          
-
-            <label>minPrice: </label>
-            <input type="text" width={10}></input>
-            <label>maxPrice: </label>
-            <input type="text"></input>
+//             <label>minPrice: </label>
+//             <input ref = {minPriceRef}type="text" width={10} name="minPrice"></input>
+//             <label>maxPrice: </label>
+//             <input ref={maxPriceRef} type="text" name = "maxPrice"></input>
             
-            <label>Beds: </label>
-            <select name="price">
-                <option value="forSale">1+</option>
-                <option value="forRent">2+</option>
-                <option value="forRent">3+ </option>
+//             <label>Beds: </label>
+//             <select ref = {roomNoRef} name="roomNo">
+//             <option value="">Beds</option>
+//                 <option value="1">1+</option>
+//                 <option value="2">2+</option>
+//                 <option value="3">3+ </option>
 
-            </select>
+//             </select>
 
-            <label>Home Types: </label>
-            <select name="price">
-                <option value="Houses">Houses</option>
-                <option value="TownHomes">TownHomes</option>
-                <option value="Multi-Family">Multi-Family</option>
-                <option value="Apartments">Apartments</option>
+//             <label>Location: </label>
+//             <input ref={locationRef}type="text" name="location"></input>
+           
 
+//             <button onClick={filterHandler}> Apply Filter</button>
+//         </div>
 
-            </select>
-
-            <button > Apply Filter</button>
-        </div>
-
-        {/* {getProperties()} */}
-    <div className="container mt-5" > <div className="row justify-content-center ">{getProperties()}</div></div>
+//         {/* {getProperties()} */}
+//     <div className="container mt-5" > <div className="row justify-content-center ">{getProperties()}</div></div>
     
-</div>;
+// </div>;
+
+
+
 }
 
 export default Properties;

@@ -3,16 +3,22 @@ import { propertiesArray } from "./Properties";
 import { Link } from "react-router-dom";
 import Property from "../components/Property";
 import { accountsArray } from "./Accounts";
+import { useContext } from "react";
+import { propertyContext } from "../context/PropertyContext";
+import './PropertyDetails.css'
 
 function AccountDetails(props){
-
+    
+    const config = useContext(propertyContext)
     const params = useParams();
     const AccountDetail = accountsArray.filter(p=>p.id==params.id)[0];
-   
-
-    // if(AccountDetail!=null){
-    console.log("inside");
-    const properties = AccountDetail.properties.map(p => {
+   let properties;
+  
+   const handleOffer = ()=>{
+    
+   }
+    if(AccountDetail.properties!=null){
+     properties = AccountDetail.properties.map(p => {
         return (
             <Link to={`${p.id}`} key={p.isbn} >
         <Property
@@ -24,7 +30,7 @@ function AccountDetails(props){
                 )
     
     });
-    // }
+    }
 
     return (
         <article>
@@ -33,7 +39,7 @@ function AccountDetails(props){
             <p> Email : {AccountDetail.email}</p>
             <p> role: {AccountDetail.role}</p>
             <p> password: {AccountDetail.password}</p>
-            {properties}
+            {AccountDetail.role==="owner"? properties : ""}
             {/* <p>Price: {AccountDetail.price}</p>
             <p>No of Rooms : {AccountDetail.roomNo}</p>
             <p>Location: {AccountDetail.location}</p>
@@ -41,7 +47,7 @@ function AccountDetails(props){
             <p>Home Type:  {AccountDetail.homeType}</p>
             <p>Status:  {AccountDetail.status}</p>
             <p>views:  {AccountDetail.views}</p> */}
-            <button>Make an Offer</button><br></br>
+            <button onClick={handleOffer}>Make an Offer</button><br></br>
             <button>Add to favorite List</button><br></br>
             <Link to = {-1}>Back</Link>
             </div>
