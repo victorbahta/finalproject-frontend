@@ -1,12 +1,11 @@
-import Properties from "../containers/Properties";
+import OwnerProperties from "../containers/OwnerProperties";
 
-function Owner(){
-
-    return <div>
-
-        <p>Owner Page</p>
-        <Properties/>
+function Owner() {
+  return (
+    <div>
+      <OwnerProperties />
     </div>
+  );
 }
 
 export default Owner;

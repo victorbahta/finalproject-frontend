@@ -16,7 +16,6 @@ function Offers(){
 
     const [offerList,setOfferList] = useState([]);
 
-
     const deleteHandler = () => {
         setFlag(!flag)
     }
