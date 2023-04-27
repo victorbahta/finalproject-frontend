@@ -48,10 +48,10 @@ function Header() {
       return (
         <React.Fragment>
           <li>
-            <Link>Manage Properties</Link>
+            <Link to="/owners">Manage Properties</Link>
           </li>
           <li>
-            <Link>Offers</Link>
+            <Link to="/offerss">Offers</Link>
           </li>
         </React.Fragment>
       );
