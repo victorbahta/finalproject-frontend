@@ -1,60 +1,60 @@
-import { Link, Navigate } from 'react-router-dom';
-import { propertyContext } from '../context/PropertyContext';
-import { useContext } from 'react';
+import { Link, Navigate } from "react-router-dom";
+import { propertyContext } from "../context/PropertyContext";
+import { useContext } from "react";
 
-import './Header.css'
+import "./Header.css";
 
-function Header(){
-  const contextData = useContext(propertyContext)
+function Header() {
+  const contextData = useContext(propertyContext);
   // console.log("inside the header thing" + contextData.isLoggedIn);
 
-  const handleLogOut = ()=>{
-       contextData.setLogInStatus(false);
-  }
+  const handleLogOut = () => {
+    contextData.setLogInStatus(false);
+  };
 
-    return  (
-            <nav>
-              <header className="header">
+  return (
+    <header className="header">
+      <nav className="navbar navbar-expand-md navbar-dark fixed-top bg-dark navbar-scroll">
+        <a class="navbar-brand" id="logo" href="/homes">
+          {/* <Link to={{pathname:"/homes", state:{propertyType: 'sell'}}}>All Homes</Link> */}
+          All Homes
+        </a>
+        <ul className="navbar-nav ms-auto">
+          <li>
+            <Link to="/buy-home" state={{ propertyType: "sell" }}>
+              Buy
+            </Link>
+          </li>
+          <li>
+            <Link to="/sell-home" state={{ propertyType: "sell" }}>
+              Sell
+            </Link>
+          </li>
 
-                  <ul>
-                     <li>
-                      {/* <Link to={{pathname:"/homes", state:{propertyType: 'sell'}}}>All Homes</Link> */}
-                      <Link to="/homes" className=' text-orange-700'>All Homes</Link>
+          <li>
+            <Link to="/rent-home" state={{ propertyType: "rent" }}>
+              {" "}
+              Rent{" "}
+            </Link>
+          </li>
 
-                    </li>
-                    <li>
-                      <Link to="/buy-home" state={{ propertyType: 'sell' } } >Buy</Link>
-                    </li>
-                    <li>
-                      <Link to="/sell-home"   state={{ propertyType: 'sell' } }>Sell</Link>
+          <li>
+            <Link to="/manage-rental"> Manage Rental </Link>
+          </li>
+          <li></li>
+          {contextData.isLoggedIn ? (
+            <Link to="/login"> Sign Out</Link>
+          ) : (
+            <Link to="/login"> Sign In</Link>
+          )}
 
-                      </li>
-
-                    <li>
-                      <Link to="/rent-home"   state={{ propertyType: 'rent' } }> Rent </Link>
-
-                    </li>
-
-
-                    <li>
-                      <Link to="/manage-rental"> Manage Rental </Link>
-                    </li>
-                    <li>
-                     
-                    </li>
-                    {
-                      
-                      contextData.isLoggedIn? (<Link to="/login"> Sign Out</Link>)
-                      :(<Link to="/login"> Sign In</Link>)
-                    }
-                   
-                   {/* { contextData.isLoggedIn ? (
+          {/* { contextData.isLoggedIn ? (
        <Link to="/login"> Sign In</Link>
       ) : (
         <Link to="/login"> Sign Out</Link>
       )} */}
-        {/* <button onClick={Navigate("/login")}>Login</button> */}
-                    {/* <li>
+          {/* <button onClick={Navigate("/login")}>Login</button> */}
+          {/* <li>
                       {
                       
                       contextData.isLoggedIn?
@@ -63,12 +63,9 @@ function Header(){
                       }
                       
                     </li> */}
-                  </ul>
-            
-        
-        
-              </header >
-            </nav>
-          )
+        </ul>
+      </nav>
+    </header>
+  );
 }
 export default Header;

@@ -1,4 +1,4 @@
-.header {
+/* .header {
     width: 80%;
     height: 5rem;
     display: flex;
@@ -7,8 +7,11 @@
     background-color: #3c0080;
     color: white;
     padding: 0 10%;
+  } */
+  .menu{
+
+    margin-right: 20px;;
   }
-  
   .header ul {
     display: flex;
     list-style: none;
@@ -45,5 +48,5 @@
   .header button:active {
     background-color: #ffa600;
     border-color: #ffa600;
-  }
+  } 
   
