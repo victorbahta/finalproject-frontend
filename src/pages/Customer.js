@@ -5,9 +5,8 @@ import { Link } from "react-router-dom";
 function Customer(){
 
     return <div>
-    <p>Customer Page</p>
-    <Link to = {"/offers"}>Offers</Link>
-    <button>FavoriteLists</button>
+    {/* <Link to = {"/offers"}>Offers</Link>
+    <button>FavoriteLists</button> */}
     <Properties/>
     </div>
 

@@ -17,8 +17,7 @@ function Header(){
  }
   const handleLogOut = ()=>{
     contextData.setLogInStatus(false);
-
-       localStorage.removeItem('token');
+    localStorage.removeItem('token');
   }
 
  
@@ -29,14 +28,31 @@ function Header(){
     return email;
 }
 
-const customerHeader = ()=>{
+const roleHeader = (role)=>{
 
-  return (<div>
+  if(role ==="admin"){
+    return (<div>
       <ul>
-          <li>Offers</li>
-          <li>Favorite List</li>
+          <li><Link>Manage Users</Link></li>
       </ul>
   </div>)
+  }else if(role==="customer"){
+    return (<div>
+      <ul>
+          <li><Link to = {"/offers"}>Offers</Link></li>
+          <li><Link to = {"/favorite"}>Favorite List</Link></li>
+      </ul>
+  </div>)
+
+  }else if(role==="owner"){
+    return (<div>
+      <ul>
+          <li><Link>Manage Properties</Link></li>
+          <li><Link>Offers</Link></li>
+      </ul>
+  </div>)
+  }
+ 
 }
 
     return  (
@@ -90,7 +106,7 @@ const customerHeader = ()=>{
               
             </nav>
         
-            {localStorage.getItem("token") && localStorage.getItem("role")==="customer" ? customerHeader():""}
+            {localStorage.getItem("token") && localStorage.getItem("role")? roleHeader(localStorage.getItem("role")):""}
             </React.Fragment>
 
           )

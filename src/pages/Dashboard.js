@@ -57,13 +57,7 @@ function Dashboard(){
     return <div>
         <propertyContext.Provider value = {{config: config, role:role,setLogInStatus:setLogInStatus, isLoggedIn:isLoggedIn,  setUserHelper:setUserHelper, user:user}} >
         {/* <Fragment> */}
-            {/* <Login setRole = {setRoleHelper}/> */}
-           
             <Header />
-
-   
-            
-
             <PageRoutes/>
         {/* </Fragment> */}
         </propertyContext.Provider>

@@ -29,7 +29,7 @@ const Offer = ({offer,deleteHandler})=>{
             <p>Location: {property.location}</p>
             <p>Status: {property.property_type}</p>
             {/* <a href="#" class="btn btn-primary">Details</a> */}
-            <button>Details</button>
+            {/* <button>Details</button> */}
             <button onClick={handleCancel}>Cancel Offer</button>
         </span>
     </div>

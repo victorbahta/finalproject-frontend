@@ -1,88 +1,63 @@
-import Properties from "../containers/Properties";
-function Admin(){
+import { useEffect, useRef, useState } from "react";
+import Account from "../components/Account";
+import axios from "axios";
+import img1 from "../images/img1.jpg";
+
+import { Link } from "react-router-dom";
+// import AdminSideMenu from "../templates/AdminSideMenu";
+
+// const [flag, setFlag] = useState(false);
+
+function Admin() {
+  const [usersAccounts, setAccountsState] = useState([{}]);
+
+  const fetchAccounts = () => {
+    axios
+      .get("http://localhost:8080/users")
+      .then((response) => {
+        setAccountsState(response.data);
+      })
+      .catch((error) => {
+        console.log(error.message);
+      });
+  };
+
+  useEffect(() => {
+    fetchAccounts();
+  }, []);
+  const accounts = usersAccounts.map((a) => {
     return (
-        <>
-          <nav
-            id="sidebarMenu"
-            class="col-md-3 col-lg-2 d-md-block bg-light sidebar collapse"
-          >
-            <p>Admin page</p>
-            <div class="position-sticky pt-3">
-              <ul class="nav flex-column">
-                <li class="nav-item">
-                  <a class="nav-link active" aria-current="page" href="#">
-                    <span data-feather="home"></span>
-                    Dashboard
-                  </a>
-                </li>
-                <li class="nav-item">
-                  <a class="nav-link" href="#">
-                    <span data-feather="file"></span>
-                    Accounts
-                  </a>
-                </li>
-                <li class="nav-item">
-                  <a class="nav-link" href="#">
-                    <span data-feather="shopping-cart"></span>
-                    Properties
-                  </a>
-                </li>
-                <li class="nav-item">
-                  <a class="nav-link" href="#">
-                    <span data-feather="users"></span>
-                    Customers
-                  </a>
-                </li>
-                <li class="nav-item">
-                  <a class="nav-link" href="#">
-                    <span data-feather="bar-chart-2"></span>
-                    Reports
-                  </a>
-                </li>
-                <li class="nav-item">
-                  <a class="nav-link" href="#">
-                    <span data-feather="layers"></span>
-                    Integrations
-                  </a>
-                </li>
-              </ul>
-    
-              <h6 class="sidebar-heading d-flex justify-content-between align-items-center px-3 mt-4 mb-1 text-muted">
-                <span>Saved reports</span>
-                <a class="link-secondary" href="#" aria-label="Add a new report">
-                  <span data-feather="plus-circle"></span>
-                </a>
-              </h6>
-              <ul class="nav flex-column mb-2">
-                <li class="nav-item">
-                  <a class="nav-link" href="#">
-                    <span data-feather="file-text"></span>
-                    Current month
-                  </a>
-                </li>
-                <li class="nav-item">
-                  <a class="nav-link" href="#">
-                    <span data-feather="file-text"></span>
-                    Last quarter
-                  </a>
-                </li>
-                <li class="nav-item">
-                  <a class="nav-link" href="#">
-                    <span data-feather="file-text"></span>
-                    Social engagement
-                  </a>
-                </li>
-                <li class="nav-item">
-                  <a class="nav-link" href="#">
-                    <span data-feather="file-text"></span>
-                    Year-end sale
-                  </a>
-                </li>
-              </ul>
-            </div>
-          </nav>
-        </>
-      );
+      // <Link to={`${a.id}`} key={a.id}>
+      <Account account={a} key={a.account_id} />
+      // {/* </Link> */}
+    );
+  });
+
+  return (
+    <>
+      <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
+        <div class="container-fluid">
+          {/* <AdminSideMenu /> */}
+
+          <div class="table-responsive">
+            <table class="table table-striped table-sm">
+              <thead>
+                <tr>
+                  {/* <th scope="col">ID</th> */}
+                  <th scope="col">Name</th>
+                  <th scope="col">Email</th>
+                  {/* <th scope="col">Role</th> */}
+                  <th scope="col">Action</th>
+                </tr>
+              </thead>
+
+              {accounts}
+            </table>
+          </div>
+        </div>
+      </main>
+    </>
+  );
 }
 
 export default Admin;

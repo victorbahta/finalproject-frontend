@@ -7,10 +7,11 @@ import axios from 'axios';
 import { useEffect } from 'react';
 function Offers(){
     const contextData = useContext(propertyContext);
-
-    console.log("email" +contextData.user.email);
-
-    
+    let email;
+    console.log(contextData);
+    if(contextData.user){
+        email = contextData.user.email;
+    }
     const [flag, setFlag] = useState(false);
 
     const [offerList,setOfferList] = useState([]);
@@ -25,7 +26,7 @@ function Offers(){
         axios.get('http://localhost:8080/users/email/' + contextData.user.email).
             then(response => {
                 console.log("the list");
-                console.log(response.data.offerList);
+                console.log(response.data);
 
                 setOfferList(response.data.offerList);
             })

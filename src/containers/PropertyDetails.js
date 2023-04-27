@@ -13,30 +13,24 @@ import img2 from '../images/img2.jpg'
 function PropertyDetails(props){
 
     const contextData = useContext(propertyContext);
+    let custId;
     const location = useLocation();
     const params = useParams();
+    const navigate = useNavigate();
+
     const [propertyDetail, setpropertyDetail] = useState({});
     const [favList, setFavList] = useState([]);
 
-    const favListHandle = ()=>{
-        setFavList([...favList, propertyDetail]);
-       
-        localStorage.setItem("favList", favList);
-    }
-
-    console.log("using it right now");
-    console.log(contextData.user);
-    let custId;
     if(contextData.user){
         custId = contextData.user.accountId;
         console.log("custId"+custId);
     }
-    const navigate = useNavigate();
 
-   
-
-    // const space = <Fragment>&nbsp;&nbsp;</Fragment>;
-
+    const favListHandle = ()=>{
+        setFavList([...favList, propertyDetail.id]);
+        localStorage.setItem("favList", favList);
+    }
+  
     const handleOffer = ()=>{
 
         if(contextData.isLoggedIn) {
@@ -52,16 +46,6 @@ function PropertyDetails(props){
         
         else navigate("/login", {state:{ previousUrl: location.pathname} });
     }
-    const deleteButtonClicked = (id) => {
-        axios.delete('http://localhost:8080/properties/' + id)
-            .then(response => {
-
-                navigate('/propertys')
-            })
-            .catch(err => {
-                console.error(err);
-            })
-    }
 
     useEffect(
         () => {
@@ -75,10 +59,6 @@ function PropertyDetails(props){
             }
         }, [params.id])
 
-
-
-
-   
     return (<div class="container"> 
     <br/> 
 <div class="row justify"> 

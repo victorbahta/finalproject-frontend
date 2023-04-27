@@ -61,13 +61,14 @@ function Login(){
 
         let res = await axios.get('http://localhost:8080/users/email/' + email); 
         const user = res.data; 
+        contextData.setUserHelper(user);
        
         const role = res.data.roles[0].role;
         localStorage.setItem("role",role);
         
         contextData.setLogInStatus(true);
         // console.log(contextData);
-        contextData.setUserHelper(user);
+    
 
         // console.log("user in loggein");
         // console.log(user);
