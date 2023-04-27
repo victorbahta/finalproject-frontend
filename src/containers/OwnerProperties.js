@@ -1,15 +1,12 @@
-import Property from "../components/Property";
-import img1 from "../images/img1.jpg";
-import img2 from "../images/img2.jpg";
-import img3 from "../images/img3.jpg";
-import PropertyDetails from "./PropertyDetails";
-import { Link } from "react-router-dom";
-import { useLocation } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useState, useEffect, useRef } from "react";
 import axios from "axios";
 import { propertyContext } from "../context/PropertyContext";
 import { useContext } from "react";
+import OwnerProperty from "../components/OwnerProperty";
 import "./properties.css";
+import React from "react";
+import img2 from "../images/img2.jpg";
 
 // export let propertiesArray = [
 //   {id:1, status: "PENDING", views: 35, location: "Fairfield", propertyType: "sell", roomNo: 4, homeType: "Family", price: 200000, image: img1},
@@ -25,6 +22,8 @@ function OwnerProperties() {
   const maxPriceRef = useRef();
   const roomNoRef = useRef();
 
+  const navigate = useNavigate();
+
   // console.log(locationRef.current.value);
 
   const formRef = useRef();
@@ -39,7 +38,16 @@ function OwnerProperties() {
     // propertyType = propertyTypeRef.current.value;
     setFlag(!flag);
   };
-
+  const deleteHandler = (id) => {
+    let check = window.confirm("Delete Property?");
+    if (check) {
+      axios
+        .delete("http://localhost:8080/properties/" + id)
+        .then((response) => {
+          setFlag(!flag);
+        });
+    }
+  };
   const fetchproperties = (id) => {
     const p = {
       propertyType: propertyTypeRef.current.value,
@@ -82,9 +90,25 @@ function OwnerProperties() {
 
     const properties = propertiesState.map((p) => {
       return (
-        <Link to={"/homes/" + p.id} key={p.isbn}>
-          <Property property={p} />
-        </Link>
+        <React.Fragment>
+          <div class="row justify-content-left ">
+            <div className="card mr-2" style={{ width: 400 }}>
+              <img className="card-img-top" src={img2} width={200} alt="a" />
+              <span class="card-body">
+                <Link to={"/homes/" + p.id} key={p.isbn}>
+                  <OwnerProperty property={p} />
+                </Link>
+
+                <button
+                  onClick={() => deleteHandler(p.id)}
+                  class="btn btn-danger"
+                >
+                  Delete
+                </button>
+              </span>
+            </div>
+          </div>
+        </React.Fragment>
       );
     });
 
