@@ -17,9 +17,8 @@ import "./properties.css";
 //   {id:3,status: "CONTINGENT", views: 65, location: "Chicago", propertyType: "sell", roomNo: 2, homeType: "Manufactured", price: 300000, image: img3},
 // ]
 
-function Properties() {
+function OwnerProperties() {
   const contextData = useContext(propertyContext);
-
   const propertyTypeRef = useRef();
   const locationRef = useRef();
   const minPriceRef = useRef();
@@ -41,7 +40,7 @@ function Properties() {
     setFlag(!flag);
   };
 
-  const fetchproperties = () => {
+  const fetchproperties = (id) => {
     const p = {
       propertyType: propertyTypeRef.current.value,
       location: locationRef.current.value,
@@ -51,17 +50,20 @@ function Properties() {
     };
 
     axios
-      .get("http://localhost:8080/properties", {
-        params: {
-          propertyType: propertyTypeRef.current.value,
-          location: locationRef.current.value,
-          roomNo: roomNoRef.current.value,
-          minPrice: minPriceRef.current.value,
-          maxPrice: maxPriceRef.current.value,
-        },
-      })
+      .get(
+        "http://localhost:8080/users/" + id
+        // {
+        // params: {
+        //   propertyType: propertyTypeRef.current.value,
+        //   location: locationRef.current.value,
+        //   roomNo: roomNoRef.current.value,
+        //   minPrice: minPriceRef.current.value,
+        //   maxPrice: maxPriceRef.current.value,
+        // },
+        // }
+      )
       .then((response) => {
-        setpropertiesState(response.data);
+        setpropertiesState(response.data.propertyList);
       })
       .catch((error) => {
         console.log(error.message);
@@ -69,7 +71,7 @@ function Properties() {
   };
 
   useEffect(() => {
-    fetchproperties();
+    fetchproperties(contextData.user.accountId);
   }, [flag]);
 
   const getProperties = () => {
@@ -190,4 +192,4 @@ function Properties() {
   // </div>;
 }
 
-export default Properties;
+export default OwnerProperties;
