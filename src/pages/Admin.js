@@ -6,14 +6,18 @@ import img1 from "../images/img1.jpg";
 import { Link } from "react-router-dom";
 // import AdminSideMenu from "../templates/AdminSideMenu";
 
-// const [flag, setFlag] = useState(false);
-
 function Admin() {
   const [usersAccounts, setAccountsState] = useState([{}]);
+  const dropdown = useRef();
+  const [flag, setFlag] = useState(false);
 
   const fetchAccounts = () => {
     axios
-      .get("http://localhost:8080/users/recent")
+      .get("http://localhost:8080/users/recent", {
+        params: {
+          status: dropdown.current.value || null,
+        },
+      })
       .then((response) => {
         setAccountsState(response.data);
       })
@@ -22,9 +26,15 @@ function Admin() {
       });
   };
 
+  const filterHandler = () => {
+    setFlag(!flag);
+    console.log(dropdown.current.value);
+  };
+
   useEffect(() => {
     fetchAccounts();
-  }, []);
+  }, [flag]);
+
   const accounts = usersAccounts.map((a) => {
     return (
       // <Link to={`${a.id}`} key={a.id}>
@@ -40,6 +50,15 @@ function Admin() {
           {/* <AdminSideMenu /> */}
 
           <div class="table-responsive">
+            <div>
+              <label>Filter: </label>
+              <select ref={dropdown}>
+                <option value="">N/A</option>
+                <option value="active">Active</option>
+                <option value="inactive">Inactive</option>
+              </select>
+              <button onClick={filterHandler}> Apply Filter</button>
+            </div>
             <table class="table table-striped table-sm">
               <thead>
                 <tr>
