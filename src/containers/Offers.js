@@ -1,20 +1,28 @@
 import { useContext, useState } from 'react';
 import { propertyContext } from '../context/PropertyContext';
 import Offer from '../components/Offer';
-import { Navigate } from 'react-router-dom';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
 import { useEffect } from 'react';
+
+
 function Offers(){
+
     const contextData = useContext(propertyContext);
     let email;
     console.log(contextData);
     if(contextData.user){
         email = contextData.user.email;
     }
+
     const [flag, setFlag] = useState(false);
 
+
     const [offerList,setOfferList] = useState([]);
+
+    const setFlagHelper = ()=>{
+        setFlag(!flag);
+      }
 
     const deleteHandler = () => {
         setFlag(!flag)
@@ -36,19 +44,21 @@ function Offers(){
 
  
     useEffect(() => {
-        fetchUser()
+        fetchUser();
+        // render();
     },
         [flag])
 
     const offers = offerList.map(p => {
         return (
-        <Offer deleteHandler={deleteHandler}  offer = {p}/>)
+        <Offer deleteHandler={deleteHandler} setFlagHelper={setFlagHelper} offer = {p}/>)
     });
-   
-   
-    return (<div>{offers}
-    {/* <button onClick={Navigate("/homes")}> </button> */}
+
+   return (
+    <div>{offers}
+
     <Link to={"/homes"}>Offer your Deal</Link>
     </div>)
+    
 }
 export default Offers;

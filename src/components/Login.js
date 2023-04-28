@@ -5,6 +5,7 @@ import { useLocation, useNavigate } from "react-router-dom";
 import jwt_decode from 'jwt-decode';
 import { useContext } from "react";
 import { Link } from "react-router-dom";
+import "./Login.css"
 
 import { propertyContext } from "../context/PropertyContext";
 
@@ -19,8 +20,6 @@ function Login(){
     const pRef = useRef();
     const navigate = useNavigate();
 
-    // const [token,setToken] = useState("");
-
     const getUserEmail = (token)=>{
         const decodedToken = jwt_decode(token);
         const email = decodedToken.sub;
@@ -31,7 +30,6 @@ function Login(){
     const redirectUser = (role,email)=>{
        
         if (location.state && location.state.previousUrl) {
-            // console.log("shld be her" + location.state.previousUrl);
             if(role!=="owner" && location.state.previousUrl==="/sell-home"){
                 navigate("/login");
             }
@@ -48,16 +46,12 @@ function Login(){
     const logInHandler = async ()=>{
 
         const loginRequest = {email:uRef.current.value, password: pRef.current.value};
-        // console.log(loginRequest);
-
         let response = await axios.post("http://localhost:8080/login", loginRequest);
-        // console.log(response.data);
 
         const token = response.data;
         localStorage.setItem("token", response.data);
       
         const email = getUserEmail(token);
-        // console.log("email" + email);
 
         let res = await axios.get('http://localhost:8080/users/email/' + email); 
         const user = res.data; 
@@ -67,25 +61,17 @@ function Login(){
         localStorage.setItem("role",role);
         
         contextData.setLogInStatus(true);
-        // console.log(contextData);
-    
-
-        // console.log("user in loggein");
-        // console.log(user);
-
-        // console.log("user in context");
-        // console.log(contextData.user);
-        // console.log("state of login: " + location.state);
         redirectUser(role,email);
        
     }
-    return <div>
-    <label for="uname"><b>Username</b></label>
-      <input ref={uRef}type="text" placeholder="Enter Email" name="uname" required></input>
+    return <div className="loginform">
+    <label className="userlable" for="uname"><b>Username</b></label>
+      <input className="userinput" ref={uRef}type="text" placeholder="Enter Email" name="uname" required></input>
 
-      <label for="psw"><b>Password</b></label>
-      <input ref = { pRef} type="password" placeholder="Enter Password" name="psw" required></input>
-      <button onClick={logInHandler}>Login</button>
+      <label className="passwordlable" for="psw"><b>Password</b></label>
+      <input className="passinput" ref = { pRef} type="password" placeholder="Enter Password" name="psw" required></input>
+      <button className="loginButton" onClick={logInHandler}>Login</button>
+      <button className="loginButton" onClick={()=>navigate("/add-account")}>Create New Account</button>
     </div>
 }
 

@@ -8,12 +8,6 @@ import "./properties.css";
 import React from "react";
 import img2 from "../images/img2.jpg";
 
-// export let propertiesArray = [
-//   {id:1, status: "PENDING", views: 35, location: "Fairfield", propertyType: "sell", roomNo: 4, homeType: "Family", price: 200000, image: img1},
-//   {id:2,status: "AVAILABLE", views: 55, location: "DesMoin", propertyType: "rent", roomNo: 7, homeType: "home-town", price: 50000, image:img2},
-//   {id:3,status: "CONTINGENT", views: 65, location: "Chicago", propertyType: "sell", roomNo: 2, homeType: "Manufactured", price: 300000, image: img3},
-// ]
-
 function OwnerProperties() {
   const contextData = useContext(propertyContext);
   const propertyTypeRef = useRef();

@@ -25,6 +25,7 @@ function Dashboard(){
     const [isLoggedIn, setIsLoggedIn] = useState(false);
     const [email,setEmail] = useState("");
     const [user, setUser] = useState(null);
+    const [offerList,setOfferList] = useState([]);
 
     const token = localStorage.getItem("token");
     const config = {
@@ -33,6 +34,9 @@ function Dashboard(){
     }
     };
    
+    const setOfferListHelper = (list)=>{
+        setOfferList(list);
+    }
 
 
     const getUserEmail = ()=>{
@@ -55,7 +59,7 @@ function Dashboard(){
     }
 
     return <div>
-        <propertyContext.Provider value = {{config: config, role:role,setLogInStatus:setLogInStatus, isLoggedIn:isLoggedIn,  setUserHelper:setUserHelper, user:user}} >
+        <propertyContext.Provider value = {{config: config, role:role,setLogInStatus:setLogInStatus, isLoggedIn:isLoggedIn,  setUserHelper:setUserHelper, user:user, offerList:offerList, setOfferListHelper:setOfferListHelper}} >
         {/* <Fragment> */}
             <Header />
             <PageRoutes/>

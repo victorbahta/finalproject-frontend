@@ -7,6 +7,8 @@ import axios from "axios";
 import { useContext } from "react";
 import { propertyContext } from "../context/PropertyContext";
 import jwt_decode from 'jwt-decode';
+import { toast, ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 import img2 from '../images/img2.jpg'
 
@@ -17,26 +19,47 @@ function PropertyDetails(props){
     const location = useLocation();
     const params = useParams();
     const navigate = useNavigate();
+    const [message, setMessage] = useState('');
+
 
 
     const [showOfferForm, setShowOfferForm] = useState(false);
-  const [offerAmount, setOfferAmount] = useState("");
-  const [messageOwner, setMessageOwner] = useState("");
+    const [offerAmount, setOfferAmount] = useState("");
+    const [showEditOffer, setshowEditOffer] = useState(false);
+    const [messageOwner, setMessageOwner] = useState("");
 
+ 
   
-
-  const handleOfferSubmit = (event) => {
-    event.preventDefault();
-    console.log(`Offer Amount: ${offerAmount}`);
-    console.log(`Message Owner: ${messageOwner}`);
-    setShowOfferForm(false);
+//   const addViewCount = async ()=>{
+//     let a = axios.get('http://localhost:8080/users/' + contextData.user.accountId)
+//     .then((res)=>{
+//         const user = res.data;
+//         let containsObj = user.offerList.some(offer =>
+//             offer.property.id == params.id);
+//             if(containsObj) setshowEditOffer(true);
+//     }).catch(err=>console.log(err))
+//   }
+  const handleOfferClick = () => {
+    setShowOfferForm(true);
+    setshowEditOffer(true);
   };
+  useEffect(()=>{
+    console.log(contextData);
+    if(contextData.user){
 
+    axios.get('http://localhost:8080/users/' + contextData.user.accountId)
+    .then((res)=>{
+        const user = res.data;
+        let containsObj = user.offerList.some(offer =>
+            offer.property.id == params.id);
+            if(containsObj) setshowEditOffer(true);
+    }).catch(err=>console.log(err))
+    }   
+  },[contextData.isLoggedIn]);
+  
 
     const [propertyDetail, setpropertyDetail] = useState({});
 
-    console.log("details");
-    console.log(propertyDetail);
     if(contextData.user){
         custId = contextData.user.accountId;
         console.log("custId"+custId);
@@ -61,14 +84,18 @@ function PropertyDetails(props){
       setFavList([...favList, item]);
     };
   
-    const handleOffer = ()=>{
+    const handleOffer = (event)=>{
+        event.preventDefault();
+        const data = {
+            amount:offerAmount,
+            message:messageOwner
+        }
 
         if(contextData.isLoggedIn) {
-            axios.put(`http://localhost:8080/users/${custId}/property/${params.id}/offer`, contextData.config)
-            .then(response => {
-                console.log("offered saved successfully");
-                setShowOfferForm(true);
-                // navigate('/offers')
+            axios.put(`http://localhost:8080/users/${custId}/property/${params.id}/offer`, data)
+            .then(response => {   
+                  setShowOfferForm(false);
+                  navigate("/offers");  
             })
             .catch(err => {
                 console.error(err);
@@ -88,7 +115,33 @@ function PropertyDetails(props){
                     })
                     .catch(err => console.log(err.message))
             }
-        }, [params.id])
+        }, [params.id]);
+
+        const dataupda = {
+            "id":6,
+            "status" : "PENDING",
+            "location" : "Denver",
+            "room_no" : 2,
+            "price": 2000000,
+            "views" : 100,
+            "property_type": "HOUSE",
+             "listing_type": "sell"
+            
+        };
+
+        useEffect(()=>{
+
+            console.log("manual dataupdated views");
+            console.log(dataupda);
+            if(Object.keys(propertyDetail).length !== 0)  
+            {
+              propertyDetail.views = propertyDetail.views + 1;
+              axios.put('http://localhost:8080/properties/' + params.id, propertyDetail);
+            }
+            console.log("updated propertyDetial views");
+            console.log(propertyDetail);
+           
+          },[propertyDetail]);
 
     return (<div class="container"> 
     <br/> 
@@ -105,36 +158,39 @@ function PropertyDetails(props){
 
 {localStorage.getItem("role")==="customer"? 
 <span>
-
 <div>
       {!showOfferForm ? (
-        <button onClick={handleOffer}>Make Offer</button>
-      ) : (
-        <form onSubmit={handleOfferSubmit}>
+        <span>
+{!showEditOffer? <button onClick={handleOfferClick}>Make Offer</button> : 
+        <button onClick={handleOfferClick}>Edit Offer</button>
+      }
+        </span>
+        )        
+        : (
+        <form onSubmit={handleOffer}>
           <label htmlFor="offerAmount">Offer Amount:</label>
           <input
             id="offerAmount"
             type="number"
-           // value={offerAmount}
-          //  onChange={(event) => setOfferAmount(event.target.value)}
+            value={offerAmount}
+            onChange={(event) => setOfferAmount(event.target.value)}
           />
           <label htmlFor="messageOwner">Message Owner:</label>
           <input
             id="messageOwner"
             type="text"
-           // value={messageOwner}
-           // onChange={(event) => setMessageOwner(event.target.value)}
+           value={messageOwner}
+           onChange={(event) => setMessageOwner(event.target.value)}
           />
-          <button type="submit">Submit Offer</button>
+          <button onClick={handleOffer} type="submit">Submit Offer</button>
         </form>
       )}
+
     </div>
 {/* <button onClick={handleOffer} class="card__button">Make an Offer</button>  */}
 <br /> 
 <button onClick={handleAddToFavList} class="card__button">Add to Favorite List</button> 
 <br/>
-<button  onClick={()=>navigate("/message")} class="card__button">Message Owner</button> 
-
 </span>
 
 :""}

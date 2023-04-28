@@ -1,0 +1,33 @@
+
+.loginform {  max-width: 400px;
+    margin: 0 auto;  display: flex;
+    flex-direction: column;  justify-content: center;
+    align-items: center;  padding: 20px;
+    border: 1px solid #ccc;  border-radius: 8px;
+    background-color: #fff;  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+  }
+  /* Style the form inputs */
+  .userinput,.passinput {
+    display: block;  width: 100%;
+    padding: 10px;  margin-bottom: 10px;
+    font-size: 16px;
+    border: 1px solid #ccc;  border-radius: 4px;
+    transition: border-color 0.3s ease;}
+  .userinput:focus,
+  .passinput:focus {  outline: none;
+    border-color: #4CAF50;}
+  /* Style the form labels */
+  .userlable,.passwordlable {
+    display: block;  margin-bottom: 5px;
+    font-size: 16px;  font-weight: bold;
+  }
+  /* Style the form button */.loginButton {
+    display: block;  width: 100%;
+    padding: 10px;  margin-top: 10px;
+    font-size: 16px;  font-weight: bold;
+    text-align: center;  color: #fff;
+    background-color: #4CAF50;  border: none;
+    border-radius: 4px;  cursor: pointer;
+    transition: background-color 0.3s ease;}
+  .signbutton:hover {
+    background-color: #3e8e41;}

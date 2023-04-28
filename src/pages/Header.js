@@ -64,7 +64,6 @@ function Header() {
         <header className="header">
           <ul>
             <li>
-              {/* <Link to={{pathname:"/homes", state:{propertyType: 'sell'}}}>All Homes</Link> */}
               <Link to="/homes" className=" text-orange-700">
                 All Homes
               </Link>
@@ -79,17 +78,6 @@ function Header() {
                 Sell/Mange-Rental
               </Link>
             </li>
-
-            {/* <li>
-                      <Link to="/rent-home"   state={{ propertyType: 'rent' } }> Rent </Link>
-
-                    </li> */}
-
-            {/* 
-                    <li>
-                      <Link to="/manage-rental"> Manage Rental </Link>
-                    </li>
-                    */}
             <li className="user">
               {localStorage.getItem("token") ? getUserEmail() : ""}
             </li>
