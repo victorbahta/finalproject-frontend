@@ -17,21 +17,18 @@ function OwnerProperties() {
   const roomNoRef = useRef();
 
   const navigate = useNavigate();
-
-  // console.log(locationRef.current.value);
-
   const formRef = useRef();
   const [flag, setFlag] = useState(false);
 
   const [propertiesState, setpropertiesState] = useState([]);
+  const [offerList, setOfferList] = useState([]);
 
   const filterHandler = () => {
-    // console.log("location" + locationRef.current.value);
-    // console.log("roomNO"+roomNoRef.current.value);
-    // console.log("type"+propertyTypeRef.current.value);
-    // propertyType = propertyTypeRef.current.value;
+  
     setFlag(!flag);
   };
+
+  
   const deleteHandler = (id) => {
     let check = window.confirm("Delete Property?");
     if (check) {
@@ -98,6 +95,19 @@ function OwnerProperties() {
                   class="btn btn-danger"
                 >
                   Delete
+                </button>
+
+                <button
+                  onClick={() => deleteHandler(p.id)}
+                  class="btn btn-danger"
+                >
+                  Edit
+                </button>
+                <button
+                  onClick={() => navigate("/owner-offers")}
+                  class="btn btn-danger"
+                >
+                  See Offers
                 </button>
               </span>
             </div>

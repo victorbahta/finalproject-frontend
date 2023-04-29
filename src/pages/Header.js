@@ -30,7 +30,7 @@ function Header() {
     if (role === "admin") {
       return (
         <li>
-          <Link>Manage Users</Link>
+          <Link to={"/admin"}>Manage Users</Link>
         </li>
       );
     } else if (role === "customer") {
@@ -52,6 +52,9 @@ function Header() {
           </li>
           <li>
             <Link to="/offerss">Offers</Link>
+          </li>
+          <li>
+            <Link to="/sell-home">Add Property</Link>
           </li>
         </React.Fragment>
       );

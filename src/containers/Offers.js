@@ -45,7 +45,6 @@ function Offers(){
  
     useEffect(() => {
         fetchUser();
-        // render();
     },
         [flag])
 

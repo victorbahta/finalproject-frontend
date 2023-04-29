@@ -16,6 +16,7 @@ import Owner from '../pages/Owner'
 import AddAccount from '../containers/AddAccount';
 import Offers from '../containers/Offers';
 import Message from '../components/Message';
+import OwnerOffers from '../containers/OwnerOffers';
 
 function PageRoutes(){
     const contextData = useContext(propertyContext);
@@ -51,7 +52,9 @@ function PageRoutes(){
             <Route path="customers" element={<Customer/>} />  
             <Route path="add-account" element={<AddAccount/>} />  
             <Route path="offers" element={<Offers/>} />  
-            <Route path="message" element={<Message/>} />  
+            {/* <Route path="message" element={<Message/>} />  */}
+            <Route path="owner-offers" element={<OwnerOffers/>} />  
+            {/* owner-offers */}
 
         </Routes>
     )

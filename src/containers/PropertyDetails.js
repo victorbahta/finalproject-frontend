@@ -9,6 +9,7 @@ import { propertyContext } from "../context/PropertyContext";
 import jwt_decode from 'jwt-decode';
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import "./PropertyDetails.css"
 
 import img2 from '../images/img2.jpg'
 
@@ -21,24 +22,12 @@ function PropertyDetails(props){
     const navigate = useNavigate();
     const [message, setMessage] = useState('');
 
-
-
     const [showOfferForm, setShowOfferForm] = useState(false);
     const [offerAmount, setOfferAmount] = useState("");
     const [showEditOffer, setshowEditOffer] = useState(false);
     const [messageOwner, setMessageOwner] = useState("");
 
- 
-  
-//   const addViewCount = async ()=>{
-//     let a = axios.get('http://localhost:8080/users/' + contextData.user.accountId)
-//     .then((res)=>{
-//         const user = res.data;
-//         let containsObj = user.offerList.some(offer =>
-//             offer.property.id == params.id);
-//             if(containsObj) setshowEditOffer(true);
-//     }).catch(err=>console.log(err))
-//   }
+
   const handleOfferClick = () => {
     setShowOfferForm(true);
     setshowEditOffer(true);
@@ -65,36 +54,23 @@ function PropertyDetails(props){
         console.log("custId"+custId);
     }
 
-    const [favList, setFavList] = useState([]);
 
-    useEffect(() => {
-      // Load favList state from localStorage when component mounts
-      const storedFavList = localStorage.getItem("favList");
-      if (storedFavList) {
-        setFavList(storedFavList);
-      }
-    }, []);
-  
-    useEffect(() => {
-      // Save favList state to localStorage whenever it changes
-      localStorage.setItem("favList", favList);
-    }, [favList]);
-  
-    const handleAddToFavList = (item) => {
-      setFavList([...favList, item]);
-    };
-  
     const handleOffer = (event)=>{
         event.preventDefault();
-        const data = {
-            amount:offerAmount,
-            message:messageOwner
-        }
+        // const data = {
 
+        console.log("custit" + custId);
+  
+        const url = "http://localhost:8080/users/" +  custId + "/property/" + params.id+ "/offer";
         if(contextData.isLoggedIn) {
-            axios.put(`http://localhost:8080/users/${custId}/property/${params.id}/offer`, data)
+            axios.put(url, {
+              amount:offerAmount,
+              message:messageOwner
+            })
             .then(response => {   
+              console.log("the url used" + url);    
                   setShowOfferForm(false);
+                  alert("Offer added successfully");
                   navigate("/offers");  
             })
             .catch(err => {
@@ -117,44 +93,29 @@ function PropertyDetails(props){
             }
         }, [params.id]);
 
-        const dataupda = {
-            "id":6,
-            "status" : "PENDING",
-            "location" : "Denver",
-            "room_no" : 2,
-            "price": 2000000,
-            "views" : 100,
-            "property_type": "HOUSE",
-             "listing_type": "sell"
-            
-        };
+
 
         useEffect(()=>{
 
-            console.log("manual dataupdated views");
-            console.log(dataupda);
             if(Object.keys(propertyDetail).length !== 0)  
             {
               propertyDetail.views = propertyDetail.views + 1;
-              axios.put('http://localhost:8080/properties/' + params.id, propertyDetail);
+            axios.put('http://localhost:8080/properties/' + params.id, propertyDetail);
             }
-            console.log("updated propertyDetial views");
-            console.log(propertyDetail);
-           
           },[propertyDetail]);
 
     return (<div class="container"> 
     <br/> 
-<div class="row justify"> 
-<article class="row justify"> 
-<div class="property-cards"> 
-<img class="card__image" src={img2} alt="Property image" /> 
-<h5 class="card__price">Price: {propertyDetail.price}$</h5> 
-<p class="card__type">For {propertyDetail.listing_type}</p> 
-<p class="card__details">No of Rooms: {propertyDetail.room_no}</p> 
-<p class="card__details">Location: {propertyDetail.location}</p> 
-<p class="card__details">Status: {propertyDetail.status}</p> 
-<p class="card__details">Views: {propertyDetail.views}</p> 
+<div className="row justify"> 
+<article className="row justify"> 
+<div className="property-cards"> 
+<img className="card__image" src=  {`http://localhost:8080/properties/${propertyDetail.id}/image`} alt="Property image" /> 
+<h5 className="card__price">Price: {propertyDetail.price}$</h5> 
+<p className="card__type">For {propertyDetail.listing_type}</p> 
+<p className="card__details">No of Rooms: {propertyDetail.room_no}</p> 
+<p className="card__details">Location: {propertyDetail.location}</p> 
+<p className="card__details">Status: {propertyDetail.status}</p> 
+<p className="card__details">Views: {propertyDetail.views}</p> 
 
 {localStorage.getItem("role")==="customer"? 
 <span>
@@ -167,7 +128,7 @@ function PropertyDetails(props){
         </span>
         )        
         : (
-        <form onSubmit={handleOffer}>
+        <form>
           <label htmlFor="offerAmount">Offer Amount:</label>
           <input
             id="offerAmount"
@@ -189,7 +150,7 @@ function PropertyDetails(props){
     </div>
 {/* <button onClick={handleOffer} class="card__button">Make an Offer</button>  */}
 <br /> 
-<button onClick={handleAddToFavList} class="card__button">Add to Favorite List</button> 
+<button class="card__button">Add to Favorite List</button> 
 <br/>
 </span>
 

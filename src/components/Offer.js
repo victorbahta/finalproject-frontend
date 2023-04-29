@@ -7,6 +7,8 @@ import 'react-toastify/dist/ReactToastify.css';
 import { useState } from 'react';
 import { useContext } from 'react';
 import { propertyContext } from '../context/PropertyContext';
+import "./Offer.css"
+
 
 const Offer = ({offer,deleteHandler, setFlagHelper})=>{
 
@@ -22,10 +24,13 @@ const handleEditOfferClick = () => {
   };
 
     const handleCancel = (id) => {
+      if(offer.property.status == "CONTINGENT"){
+        alert("this offer cant be canceled. contact the owner");
+        return;
+      }
         axios.delete('http://localhost:8080/offers/' + offer.id)
             .then(response => {
                 deleteHandler(offer.id);
-            //    navigate('/customers')
                 console.log("deleted");
             })
             .catch(err => {
@@ -57,12 +62,12 @@ const handleEditOfferClick = () => {
     return <div class="row justify-content-left ">
     <div className="card mr-2" style={{width: 400}}>
         
-        <img  className="card-img-top" src={img2}  width = {200} alt="a"/>
+        <img  className="card-img-top" src=  {`http://localhost:8080/properties/${property.id}/image`} width = {200} alt="a"/>
         <span class="card-body">
             <h5 class="card-title">{property.price}$</h5>
-            <p>No of Rooms : {property.room_no}</p>
+            <p className='parag'>No of Rooms : {property.room_no}</p>
             <p>Location: {property.location}</p>
-            <p>Status: {property.property_type}</p>
+            <p>Status: {property.status}</p>
             <h5>Offered Amount: {offer.amount}$</h5>
             {/* <a href="#" class="btn btn-primary">Details</a> */}
             {/* <button>Details</button> */}
@@ -71,10 +76,10 @@ const handleEditOfferClick = () => {
     
 <div>
       {!showOfferForm ? (
-        <button onClick={handleEditOfferClick}>Edit Offer</button>) : (
-        <form onSubmit={handleOffer}>
+        <button className="mybutton" onClick={handleEditOfferClick}>Edit Offer</button>) : (
+        <form className="myform" onSubmit={handleOffer}>
           <label htmlFor="offerAmount">Offer Amount:</label>
-          <input
+          <input className='myinput'
             id="offerAmount"
             type="number"
             value={offerAmount}
@@ -90,6 +95,7 @@ const handleEditOfferClick = () => {
           <button onClick={handleOffer} type="submit">Submit Offer</button>
         </form>
       )}
+      <br/>
         <div><button onClick={handleCancel} type="submit">Cancel Offer</button></div>
 
 

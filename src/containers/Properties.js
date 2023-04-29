@@ -33,16 +33,14 @@ function Properties() {
     setFlag(!flag);
   };
 
-  const setFlagHelper = ()=>{
-    setFlag(!flag);
-  }
+
 
   const fetchproperties = () => { 
    axios
       .get("http://localhost:8080/properties", 
       {
         params: {
-          listingType : listing_typeRef.current.value,
+        //  listingType : listing_typeRef.current.value,
           roomNo: roomNoRef.current.value,
           minPrice: minPriceRef.current.value,
           maxPrice: maxPriceRef.current.value,
@@ -106,9 +104,11 @@ function Properties() {
         <label class="beds-label">Beds: </label>
         <select class="beds-select" ref={roomNoRef} name="roomNo">
           <option value="">Beds</option>
-          <option value="1">1+</option>
-          <option value="2">2+</option>
-          <option value="3">3+ </option>
+          <option value="1">1</option>
+          <option value="2">2</option>
+          <option value="3">3</option>
+          <option value="5">5</option>
+          <option value="7">7</option>
         </select>
 
         <label class="location-label">Location: </label>

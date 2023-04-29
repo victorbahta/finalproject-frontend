@@ -12,6 +12,7 @@ function AddProperty(props) {
   const location = useLocation();
   // const propertyType = location.state.propertyType;
   const [userId, setUserId] = useState();
+  const [userStatus, setUserStatus] = useState();
 
   // let userId;
 
@@ -31,6 +32,7 @@ function AddProperty(props) {
       .then((res) => {
         console.log(res);
         setUserId(res.data.accountId);
+        setUserStatus(res.data.status);
       })
       .catch((err) => console.log(err));
     // userId = user.data.accountId;
@@ -39,7 +41,17 @@ function AddProperty(props) {
   };
 
   const AddProperty = (e) => {
-    if (contextData.isLoggedIn) {
+    
+    console.log("userStauts" + userStatus);
+    if (contextData.isLoggedIn || localStorage.getItem("token")) {
+      
+      if(userStatus=="inactive"){
+        alert("You are not approved by the admin");
+        return;
+      }
+      
+        console.log("it is inactive");
+
       const user = getUserID();
       console.log("userIDin down:" + userId);
       e.preventDefault();
@@ -82,32 +94,6 @@ function AddProperty(props) {
         });
     } else navigate("/login", { state: { previousUrl: location.pathname } });
   };
-
-  //   return (
-  //     <div className="NewProperty">
-  //       <form ref={newPropertyForm} onSubmit={AddProperty}>
-  //         <h1>Add a Property</h1>
-
-  //         <label>location</label>
-  //         <input type="text" label={"location"} name={"location"} />
-
-  //         <label>No Of Rooms</label>
-  //         <input type="text" label={"roomNo"} name={"roomNo"} />
-  //         <label>Price</label>
-  //         <input type="text" label={"price"} name={"price"} />
-
-  //  <br></br>
-  //         <button class="btn btn-primary" onClick={AddProperty}>Add Property </button>
-  //         {/* <br></br>  */}
-  //         <button class="btn btn-primary" onClick={() => navigate("/homes")}>Cancel</button>
-  //          {/* <br></br> */}
-  //         <Link to="/add-account">
-  //         <button class="btn btn-primary" onClick={() => navigate("/addAccount")}>Add Account</button>
-
-  //         </Link>
-  //       </form>
-  //     </div>
-  //   );
 
   return (
     <div className="NewProperty">

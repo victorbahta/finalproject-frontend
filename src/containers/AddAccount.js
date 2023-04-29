@@ -35,7 +35,7 @@ function AddAccount(props) {
   } 
 }) 
     .then(data => { 
-        navigate('/sell-home'); 
+        navigate('/homes'); 
     }) 
     .catch(error => { 
         console.error('Error:', error.response); 
