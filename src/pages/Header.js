@@ -1,71 +1,109 @@
 import { Link, Navigate } from "react-router-dom";
 import { propertyContext } from "../context/PropertyContext";
-import { useContext } from "react";
-
+import { useContext, useEffect, useState } from "react";
+import jwt_decode from "jwt-decode";
 import "./Header.css";
+import axios from "axios";
+import React from "react";
 
 function Header() {
+  const token = localStorage.getItem("token");
+  const [role, setRole] = useState();
   const contextData = useContext(propertyContext);
-  // console.log("inside the header thing" + contextData.isLoggedIn);
 
+  if (!localStorage.getItem("token")) {
+    contextData.setLogInStatus(false);
+  }
   const handleLogOut = () => {
+    localStorage.removeItem("token");
     contextData.setLogInStatus(false);
   };
 
+  const getUserEmail = () => {
+    if (!token) return null;
+    const decodedToken = jwt_decode(token);
+    const email = decodedToken.sub;
+    return email;
+  };
+
+  const roleHeader = (role) => {
+    if (role === "admin") {
+      return (
+        <li>
+          <Link to={"/admin"}>Manage Users</Link>
+        </li>
+      );
+    } else if (role === "customer") {
+      return (
+        <React.Fragment>
+          <li>
+            <Link to={"/offers"}>Offers</Link>
+          </li>
+          <li>
+            <Link to={"/favorite"}>Favorite List</Link>
+          </li>
+        </React.Fragment>
+      );
+    } else if (role === "owner") {
+      return (
+        <React.Fragment>
+          <li>
+            <Link to="/owners">Manage Properties</Link>
+          </li>
+          <li>
+            <Link to="/offerss">Offers</Link>
+          </li>
+          <li>
+            <Link to="/sell-home">Add Property</Link>
+          </li>
+        </React.Fragment>
+      );
+    }
+  };
+
   return (
-    <header className="header">
-      <nav className="navbar navbar-expand-md navbar-dark fixed-top bg-dark navbar-scroll">
-        <a class="navbar-brand" id="logo" href="/homes">
-          {/* <Link to={{pathname:"/homes", state:{propertyType: 'sell'}}}>All Homes</Link> */}
-          All Homes
-        </a>
-        <ul className="navbar-nav ms-auto">
-          <li>
-            <Link to="/buy-home" state={{ propertyType: "sell" }}>
-              Buy
-            </Link>
-          </li>
-          <li>
-            <Link to="/sell-home" state={{ propertyType: "sell" }}>
-              Sell
-            </Link>
-          </li>
+    <React.Fragment>
+      <nav>
+        <header className="header">
+          <ul>
+            <li>
+              <Link to="/homes" className=" text-orange-700">
+                All Homes
+              </Link>
+            </li>
+            <li>
+              <Link to="/buy-home" state={{ propertyType: "sell" }}>
+                Buy/Rent
+              </Link>
+            </li>
+            <li>
+              <Link to="/sell-home" state={{ propertyType: "sell" }}>
+                Sell/Mange-Rental
+              </Link>
+            </li>
+            <li className="user">
+              {localStorage.getItem("token") ? getUserEmail() : ""}
+            </li>
 
-          <li>
-            <Link to="/rent-home" state={{ propertyType: "rent" }}>
-              {" "}
-              Rent{" "}
-            </Link>
-          </li>
-
-          <li>
-            <Link to="/manage-rental"> Manage Rental </Link>
-          </li>
-          <li></li>
-          {contextData.isLoggedIn ? (
-            <Link to="/login"> Sign Out</Link>
-          ) : (
-            <Link to="/login"> Sign In</Link>
-          )}
-
-          {/* { contextData.isLoggedIn ? (
-       <Link to="/login"> Sign In</Link>
-      ) : (
-        <Link to="/login"> Sign Out</Link>
-      )} */}
-          {/* <button onClick={Navigate("/login")}>Login</button> */}
-          {/* <li>
-                      {
-                      
-                      contextData.isLoggedIn?
-                      <button onClick={Navigate("/login")}>Login</button>:
-                      <button onClick={Navigate("/login")}>Logout</button>
-                      }
-                      
-                    </li> */}
-        </ul>
+            {contextData.isLoggedIn || localStorage.getItem("token") ? (
+              <Link to="/login" onClick={handleLogOut}>
+                {" "}
+                Sign Out
+              </Link>
+            ) : (
+              <li>
+                <Link to="/login"> Sign In</Link> <span> </span>
+                <Link to={"/add-account"}>Sign Up</Link>{" "}
+              </li>
+            )}
+            {localStorage.getItem("token") && localStorage.getItem("role")
+              ? roleHeader(localStorage.getItem("role"))
+              : ""}
+            {/* <Link to="/login" onClick={handleLogOut()}> Sign Out</Link> */}
+          </ul>
+        </header>
       </nav>
-    </header>
+    </React.Fragment>
   );
 }
 export default Header;

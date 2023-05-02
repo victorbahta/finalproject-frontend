@@ -1,0 +1,82 @@
+/* .row {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: left;
+  }
+  
+  .card {
+    margin-right: 2px;
+    width: 400px;
+  }
+  
+  .card-img-top {
+    width: 200px;
+  }
+  
+  .card-title {
+    font-size: 24px;
+    font-weight: bold;
+  }
+  
+  .parag {
+    margin-bottom: 0;
+  }
+  
+  .mybutton {
+    background-color: blue;
+    color: white;
+    padding: 8px;
+    border: none;
+    border-radius: 4px;
+    margin-top: 16px;
+    cursor: pointer;
+  }
+  
+  .myform {
+    display: flex;
+    flex-direction: column;
+    margin-top: 16px;
+  }
+  
+  .myform label {
+    margin-bottom: 8px;
+    font-weight: bold;
+  }
+  
+  .myinput {
+    padding: 8px;
+    margin-bottom: 16px;
+    border-radius: 4px;
+    border: 1px solid #ccc;
+  }
+  
+  button[type="submit"] {
+    background-color: blue;
+    color: white;
+    padding: 8px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    margin-top: 16px;
+  }
+  
+  button[type="submit"]:hover {
+    background-color: #004d99;
+  }
+  
+  button[type="submit"]:disabled {
+    background-color: #ccc;
+    cursor: not-allowed;
+  }
+  .card-container {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    flex-wrap: wrap;
+  }
+  
+  .card {
+    flex: 1 1 400px;
+    margin: 0 10px 20px;
+  }
+   */

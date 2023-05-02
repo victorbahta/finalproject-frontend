@@ -1,6 +1,11 @@
-function Owner(){
+import OwnerProperties from "../containers/OwnerProperties";
 
-    return <div></div>
+function Owner() {
+  return (
+    <div>
+      <OwnerProperties />
+    </div>
+  );
 }
 
 export default Owner;

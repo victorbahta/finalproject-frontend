@@ -4,14 +4,28 @@ import Property from "../components/Property";
 import { accountsArray } from "./Accounts";
 import axios from "axios";
 import { useEffect, useState } from "react";
-import { propertyContext } from "../context/PropertyContext";
-import Account from "../components/Account";
+// import { propertyContext } from "../context/PropertyContext";
+// import Account from "../components/Account";
 
 function AccountDetails(props) {
   const params = useParams();
   const navigate = useNavigate();
   const [accountDetail, setAccountDetail] = useState({});
   const [flag, setFlag] = useState(false);
+
+  let properties;
+  console.log(accountDetail);
+   if(accountDetail.propertyList!=null){
+    properties = accountDetail.propertyList.map(p => {
+       return (
+           <Link to={`${p.id}`} key={p.isbn} >
+       <Property
+                   property={p}
+               /></Link>
+               )
+   
+   });
+   }
 
   const activate = () => {
     axios
@@ -45,78 +59,55 @@ function AccountDetails(props) {
 
   return (
     <article>
-      <br />
-      <br />
-      <br />
-      <br />
-      <br />
-      <br />
-      <div className="Info">
-        <p> Name: {accountDetail.name}</p>
-        <p> Email : {accountDetail.email}</p>
+    <br />
+    <div className="Info">
+      <p> Name: {accountDetail.name}</p>
+      <p> Email : {accountDetail.email}</p>
 
-        <div style={{ textAlign: "left" }}>
-          {accountDetail.roles == null ? "Term status: inactive" : "Role: "}
-          {/* <br /> */}
-          {accountDetail.roles != null
-            ? accountDetail.roles.map((role) => {
-                // let role=role.role;
-                return (
-                  //   <Account id={role.id} key={role.id} cName={role.role} />
-                  <span>
-                    {role.role}
+      <div style={{ textAlign: "left" }}>
+        {accountDetail.roles == null ? "Term status: inactive" : "Role: "}
+        {/* <br /> */}
+        {accountDetail.roles != null
+          ? accountDetail.roles.map((role) => {
+              // let role=role.role;
+              return (
+                <span>
+                  {role.role}
 
-                    {role.role === "owner" &&
+                  {role.role !== "customer" ? (
                     accountDetail.status === "inactive" ? (
-                      <p>
-                        <button
-                          onClick={() => {
-                            activate();
-                          }}
-                          className="btn btn-primary"
-                        >
-                          Activate
-                        </button>
-                        {/* &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; */}
-                      </p>
+                      <button
+                        onClick={() => {
+                          activate();
+                        }}
+                        className="btn btn-primary"
+                      >
+                        Activate
+                      </button>
                     ) : (
-                      " "
-                    )}
-                    <button
-                      onClick={() => {
-                        deactivate();
-                      }}
-                      className="btn btn-danger"
-                    >
-                      Deactivate
-                    </button>
-                  </span>
-                );
-              })
-            : null}
-        </div>
-
-        <div>
-          {accountDetail.propertyList == null ? "" : <h3>PropertyList</h3>}
-          {/* <br /> */}
-          {accountDetail.propertyList != null
-            ? accountDetail.propertyList.map((p) => {
-                // let role=role.role;
-                return (
-                  <Link to={`/properties/${p.id}`} key={p.id}>
-                    <Property property={p} />
-                  </Link>
-                );
-              })
-            : null}
-        </div>
-
-        <Link to={-1}>Back</Link>
+                      <button
+                        onClick={() => {
+                          deactivate();
+                        }}
+                        className="btn btn-danger"
+                      >
+                        Deactivate
+                      </button>
+                    )
+                  ) : (
+                    " "
+                  )}
+                </span>
+              );
+            })
+          : null}
       </div>
-      <br />
 
-      {/* add this to blog context */}
-    </article>
+      <Link to={-1}>Back</Link>
+    </div>
+    <br />
+    {properties}
+  </article>
   );
 }
 

@@ -8,16 +8,13 @@ import { useState } from "react";
 import { propertyContext } from "../context/PropertyContext";
 import PageRoutes from "../routes/PageRoutes"
 import Login from "../components/Login";
+import jwt_decode from 'jwt-decode';
+import axios from 'axios';
+import Owner from "./Owner";
+import Admin from "./Admin";
 
 
-const token = localStorage.getItem("token");
-// console.log("retrieved token::" + token)
-const config = {
-headers: {
-    Authorization: `Bearer ${token}` 
-}
-};
-// const role = "owner";
+
 
 
 
@@ -26,24 +23,45 @@ function Dashboard(){
 
     const [role,setRole] = useState("");
     const [isLoggedIn, setIsLoggedIn] = useState(false);
+    const [email,setEmail] = useState("");
+    const [user, setUser] = useState(null);
+    const [offerList,setOfferList] = useState([]);
+
+    const token = localStorage.getItem("token");
+    const config = {
+    headers: {
+        Authorization: `Bearer ${token}` 
+    }
+    };
+   
+    const setOfferListHelper = (list)=>{
+        setOfferList(list);
+    }
+
+
+    const getUserEmail = ()=>{
+        if(!token) return null;
+        const decodedToken = jwt_decode(token);
+        const email = decodedToken.sub;
+        return email;
+    }
+    const setUserHelper = async(user)=>{
+    //   const email = getUserEmail();
+    //   if(!email) return null;
+      console.log("setting up the user to:");
+      console.log(user);
+      setUser(user);  
+    }
+
 
     const setLogInStatus = (status)=>{
-        // console.log("inside setLogInstatus" + status);
             setIsLoggedIn(status);
-    }
-   
-    const setRoleHelper = (role)=>{
-        setRole(role);
     }
 
     return <div>
-        <propertyContext.Provider value = {{config: config, role:role, setRoleHelper : setRoleHelper, setLogInStatus:setLogInStatus, isLoggedIn:isLoggedIn}} >
+        <propertyContext.Provider value = {{config: config, role:role,setLogInStatus:setLogInStatus, isLoggedIn:isLoggedIn,  setUserHelper:setUserHelper, user:user, offerList:offerList, setOfferListHelper:setOfferListHelper}} >
         {/* <Fragment> */}
-            {/* <Login setRole = {setRoleHelper}/> */}
-           
             <Header />
-            
-
             <PageRoutes/>
         {/* </Fragment> */}
         </propertyContext.Provider>

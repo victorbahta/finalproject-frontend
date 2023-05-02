@@ -11,16 +11,21 @@ import { useContext } from "react";
 import { propertyContext } from "../context/PropertyContext";
 import Admin from "../pages/Admin";
 import { Navigate } from 'react-router-dom';
+import Customer from '../pages/Customer';
+import Owner from '../pages/Owner'
+import AddAccount from '../containers/AddAccount';
+import Offers from '../containers/Offers';
+import Message from '../components/Message';
+import OwnerOffers from '../containers/OwnerOffers';
 
 function PageRoutes(){
-            // element={<Properties />} 
-
     const contextData = useContext(propertyContext);
-    console.log("in pageroutes");
-    console.log(contextData);
+
     return (
         <Routes>
           
+          <Route path="/" element={<Properties/>}/>
+
           <Route path="/homes" element={<Properties/>}/>
           {console.log(contextData.isLoggedIn)}
           <Route path="/homes"
@@ -43,7 +48,13 @@ function PageRoutes(){
 
             <Route path="login" element={<Login />} /> 
             <Route path="admin" element={<Admin/>} />  
- 
+            <Route path="owners" element={<Owner/>} />  
+            <Route path="customers" element={<Customer/>} />  
+            <Route path="add-account" element={<AddAccount/>} />  
+            <Route path="offers" element={<Offers/>} />  
+            {/* <Route path="message" element={<Message/>} />  */}
+            <Route path="owner-offers" element={<OwnerOffers/>} />  
+            {/* owner-offers */}
 
         </Routes>
     )
